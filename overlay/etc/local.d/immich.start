@@ -2,3 +2,20 @@
 
 rc-update add docker boot
 service docker start
+
+# Wait until Docker is up
+tries=0
+until docker info >/dev/null 2>&1; do
+    tries=$((tries + 1))
+    if [ "$tries" -ge 20 ]; then
+        echo "Docker did not start in time" >&2
+        exit 1
+    fi
+    sleep 1
+done
+
+# Navigate to the compose directory
+cd /usr/app/ || exit 1
+
+# Start your stack
+docker compose up -d

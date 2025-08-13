@@ -1,11 +1,9 @@
 #!/bin/sh
 
-apk add alpine-sdk alpine-conf xorriso squashfs-tools grub grub-efi doas docker openrc fuse-overlayfs mtools dosfstools grub-efi
+apk add alpine-sdk alpine-conf xorriso squashfs-tools grub grub-efi mtools dosfstools grub-efi pigz doas
 
 echo "permit persist root" > /etc/doas.d/doas.conf
 echo "permit nopass root" >> /etc/doas.d/doas.conf
-
-addgroup build docker
 
 # su - build -c "
 abuild-keygen -i -a -n

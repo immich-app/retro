@@ -27,8 +27,7 @@ rc_add() {
 }
 
 
-tmp="$(mktemp -d)"
-trap cleanup EXIT
+tmp="/home/overlay"
 
 mkdir -p "$tmp"/etc
 makefile root:root 0644 "$tmp"/etc/hostname <<EOF
@@ -58,31 +57,16 @@ rc_add hwdrivers sysinit
 rc_add modloop sysinit
 
 rc_add hwclock boot
-rc_add modules boot
+rc_add modules boot   
 rc_add sysctl boot
 rc_add hostname boot
 rc_add bootmisc boot
 rc_add syslog boot
 rc_add docker boot
+rc_add local boot
 
 rc_add mount-ro shutdown
 rc_add killprocs shutdown
 rc_add savecache shutdown
 
-# copy all directories from overlay/ into $tmp and merge
-cp -a /home/overlay/. "$tmp"/
-
-# run docker and docker pull the images
-mkdir -p "$tmp"/var/lib/docker
-dockerd --data-root "$tmp"/var/lib/docker/ &
-
-sleep 5
-
-docker pull ghcr.io/immich-app/immich-server:release
-docker pull ghcr.io/immich-app/immich-machine-learning:release
-docker pull docker.io/valkey/valkey:8-bookworm
-docker pull ghcr.io/immich-app/postgres:14-vectorchord0.4.3-pgvectors0.2.0
-
-pkill docker || true
-
-tar -c -C "$tmp" etc usr var | gzip -9n > $HOSTNAME.apkovl.tar.gz
+tar -c -C "$tmp" etc usr var | pigz -9n > "$HOSTNAME.apkovl.tar.gz"
