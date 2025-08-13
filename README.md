@@ -1,32 +1,21 @@
-Steps to build:
+# Immich-retro
 
-1. Fire up a local alpine image on Docker:
+## How to build
 
-```bash
-docker run --rm -it -v "$(pwd)":/home alpine sh
-```
-
-2. Inside the container, run
+Run the following from the root of this repository
 
 ```bash
-apk add alpine-sdk abuild
+docker run --rm -it -v "$(pwd)":/home --privileged alpine sh ./home/build.sh
 ```
 
-3. Run
+The built image will be placed in `out/`
 
-```bash
-tar --numeric-owner --owner=0 --group=0 -cf root-overlay.tar -C overlay .
-```
+### A couple of notes:
 
-3. Run
-
-```bash
-./mkimage.sh --tag immich \
-	--outdir out \
-	--arch x86_64 \
-	--repository https://dl-cdn.alpinelinux.org/alpine/latest-stable/main \
-	--profile immich
-
-```
-
-4.
+- The entirety of the operating system runs from RAM. No configuration, assets, or settings will be persisted on reboot of the machine. DO NOT use this as your main Immich instance.
+  - All assets are stored in RAM so you may quickly run out of "storage" if your machine has less than 16GB of RAM.
+- If booting from the DVD, the boot process **will be slow**. You may see "0%" for a prolonged period of time during boot. _Be patient!_. This part of the boot process requires reading the entire DVD and loading it into RAM.
+- Minimum system requirements:
+  - 2 core x86 processor
+  - 8GB of RAM, 16GB recommended
+  - No storage drive needed!

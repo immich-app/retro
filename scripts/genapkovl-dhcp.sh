@@ -1,7 +1,5 @@
 #!/bin/sh -e
 
-# modified from https://gitlab.alpinelinux.org/alpine/aports/-/blob/master/scripts/genapkovl-dhcp.sh?ref_type=heads
-
 HOSTNAME="$1"
 if [ -z "$HOSTNAME" ]; then
 	echo "usage: $0 hostname"
@@ -26,7 +24,6 @@ rc_add() {
 	ln -sf /etc/init.d/"$1" "$tmp"/etc/runlevels/"$2"/"$1"
 }
 
-
 tmp="$(mktemp -d)"
 trap cleanup EXIT
 
@@ -47,8 +44,6 @@ EOF
 mkdir -p "$tmp"/etc/apk
 makefile root:root 0644 "$tmp"/etc/apk/world <<EOF
 alpine-base
-docker
-docker-compose
 EOF
 
 rc_add devfs sysinit
@@ -63,26 +58,9 @@ rc_add sysctl boot
 rc_add hostname boot
 rc_add bootmisc boot
 rc_add syslog boot
-rc_add docker boot
 
 rc_add mount-ro shutdown
 rc_add killprocs shutdown
 rc_add savecache shutdown
 
-# copy all directories from overlay/ into $tmp and merge
-cp -a /home/overlay/. "$tmp"/
-
-# run docker and docker pull the images
-mkdir -p "$tmp"/var/lib/docker
-dockerd --data-root "$tmp"/var/lib/docker/ &
-
-sleep 5
-
-docker pull ghcr.io/immich-app/immich-server:release
-docker pull ghcr.io/immich-app/immich-machine-learning:release
-docker pull docker.io/valkey/valkey:8-bookworm
-docker pull ghcr.io/immich-app/postgres:14-vectorchord0.4.3-pgvectors0.2.0
-
-pkill docker || true
-
-tar -c -C "$tmp" etc usr var | gzip -9n > $HOSTNAME.apkovl.tar.gz
+tar -c -C "$tmp" etc | gzip -9n > $HOSTNAME.apkovl.tar.gz

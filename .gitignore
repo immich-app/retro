@@ -1,3 +1,4 @@
-overlay/usr/app/images/*.tar
-immich.apkovl.tar.gz
-mkimage.sh
+overlay/var/lib/docker
+build/
+out/
+.overlay-build/
