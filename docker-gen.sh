@@ -3,7 +3,7 @@
 # List of Docker image tags (space-separated)
 # ML is excluded since it requires internet to download models
 
-IMMICH_VERSION=v1.137.3
+IMMICH_VERSION=v1.138.0
 
 images="
 ghcr.io/immich-app/immich-server:$IMMICH_VERSION

@@ -41,8 +41,7 @@ docker run --rm -it -v "$(pwd)":/home --privileged --name iso-build alpine sh ./
 
 ### Adding a demo library
 
-You may add a demo library in the instance by copying the `library` and `postgres` folders into `overlay/usr/app/library` and `overlay/usr/app/postgres` respectively.
-
+There is a `docker-compose.yml` inside of `utils/instance-gen` that you can run to create and customize an included in the image. Ensure that `docker compose up` is run from **within** `utils/instance-gen` in order to have the folders map properly
 
 ### A couple of notes:
 
