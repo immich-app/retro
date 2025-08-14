@@ -31,7 +31,9 @@ services:
     healthcheck:
       disable: false
 
-  # if you are insane enough to uncomment this, you will need an active internet connection to download the image and models
+  # if you are insane enough to uncomment this, you will need an active internet connection to download the image and models. 
+  # Also uncomment the model_cache volume at the bottom of this file
+
   # immich-machine-learning:
   #   container_name: immich_machine_learning
   #   # For hardware acceleration, add one of -[armnn, cuda, rocm, openvino, rknn] to the image tag.
@@ -70,5 +72,6 @@ services:
       - ${DB_DATA_LOCATION}:/var/lib/postgresql/data
     restart: always
 
-volumes:
-  model-cache:
+# uncomment below if enabling machine learning
+# volumes:
+#   model-cache:

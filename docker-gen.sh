@@ -2,8 +2,11 @@
 
 # List of Docker image tags (space-separated)
 # ML is excluded since it requires internet to download models
+
+IMMICH_VERSION=v1.137.3
+
 images="
-ghcr.io/immich-app/immich-server:v1.137.3
+ghcr.io/immich-app/immich-server:$IMMICH_VERSION
 docker.io/valkey/valkey:8-bookworm
 ghcr.io/immich-app/postgres:14-vectorchord0.4.3-pgvectors0.2.0
 "

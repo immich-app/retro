@@ -1,4 +1,6 @@
 overlay/var/lib/docker
+overlay/usr/app/library
+overlay/usr/app/postgres
 build/
 out/
 .overlay-build/
